@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from pathlib import Path
 import time
+import csv
 
 def main():
     driver_path = '../chromedriver'
@@ -50,11 +51,48 @@ def scrapeData(driver):
 
 
     ##now we have the data page open!!:))
-    # ##print click
-    # try: 
-    #     element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn_print")))
-    # finally:
-    #     driver.find_element_by_id("btn_print").click()
+    try: 
+        element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn_print")))
+    finally:
+        rows_xpath = "/html/body/form/div[3]/table/tbody/tr[2]/td/div/div[1]/table/tbody/tr/td/div/div/table/tbody/tr"
+        rows = 1 + len(driver.find_elements_by_xpath(rows_xpath))
+        columns_xpath = "/html/body/form/div[3]/table/tbody/tr[2]/td/div/div[1]/table/tbody/tr/td/div/div/table/tbody/tr[1]/td"
+        columns = len(driver.find_elements_by_xpath(columns_xpath))
+
+        ##array to store data for each day
+        dayData = []
+        
+
+        ##get the table headings
+        dayDataHeadings = []
+        for p in range(1, columns+1):
+            value = driver.find_element_by_xpath("/html/body/form/div[3]/table/tbody/tr[2]/td/div/div[1]/table/tbody/tr/td/div/div/table/thead/tr/th["+str(p)+"]").text
+            dayDataHeadings.append(value)
+        dayData.append(dayDataHeadings)
+        
+
+        
+
+
+
+
+        ##Loop over the table
+        for r in range(1, rows):
+            dayData.append([])
+            for p in range(1, columns+1):
+                value = driver.find_element_by_xpath("/html/body/form/div[3]/table/tbody/tr[2]/td/div/div[1]/table/tbody/tr/td/div/div/table/tbody/tr["+str(r)+"]/td["+str(p)+"]").text
+                dayData[r].append(value)
+
+
+        with open("myfile.csv", "w+") as file:
+            csvWriter = csv.writer(file, delimiter=',')
+            csvWriter.writerows(dayData)
+
+        print(dayData)
+
+
+
+
     return 
 
 
