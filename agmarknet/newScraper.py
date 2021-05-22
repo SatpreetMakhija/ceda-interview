@@ -47,7 +47,7 @@ for i in range(len(commodityList)):
 
     
 #write finalData
-with open("data.csv", "w+") as file:
+with open("./agmarketData/10-05-21_to_16-05-21.csv", "w+") as file:
     csvWriter= csv.writer(file, delimiter = ",")
     csvWriter.writerows(finalData)
 print(finalData)        

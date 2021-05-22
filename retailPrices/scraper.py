@@ -25,7 +25,7 @@ def main():
 def scrapeData(driver):
 
 
-    dates = ["10/04/2021", "11/04/2021"]
+    # dates = ["10/04/2021", "11/04/2021"]
 
 
 
@@ -59,6 +59,7 @@ def scrapeData(driver):
         finally:
             driver.find_element_by_id("ctl00_MainContent_Txt_FrmDate").send_keys(dateToScrape)
         
+        #click on Get Data button
         driver.find_element_by_id("ctl00_MainContent_btn_getdata1").click()
 
 
